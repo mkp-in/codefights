@@ -7,9 +7,9 @@ public class KnapsackLight {
 
     public static void main(final String[] args) {
         KnapsackLight knapsackLight = new KnapsackLight();
-        //System.out.println(knapsackLight.knapsackLight(10, 5 , 6 , 4, 8));
-        //System.out.println(knapsackLight.knapsackLight(3, 5 , 3 , 8, 10));
-        //System.out.println(knapsackLight.knapsackLight(4, 3 , 3 , 4, 4));
+        System.out.println(knapsackLight.knapsackLight(10, 5 , 6 , 4, 8));
+        System.out.println(knapsackLight.knapsackLight(3, 5 , 3 , 8, 10));
+        System.out.println(knapsackLight.knapsackLight(4, 3 , 3 , 4, 4));
         System.out.println(knapsackLight.knapsackLight(15, 2 , 20, 3, 2));
     }
 

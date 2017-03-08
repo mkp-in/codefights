@@ -27,7 +27,6 @@ public class StringRearrange2 {
 
     boolean stringsRearrangement(String[] a) {
         int n = a.length;
-        //boolean [][] matrix = new matrix[n][n];
 
         int [] degree = new int[n];
 
