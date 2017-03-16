@@ -19,18 +19,14 @@ public class DeleteDigit {
         final Character[] digitChars = stringNumber.chars().mapToObj(c -> (char)c).toArray(Character[]::new);
         final int[] digits = Arrays.stream(digitChars).mapToInt(i -> i - '0').toArray();
         final IntSummaryStatistics intSummaryStatistics = Arrays.stream(digits).summaryStatistics();
-        final int min = intSummaryStatistics.getMin();
+        int min = intSummaryStatistics.getMin();
+        final int max = intSummaryStatistics.getMax();
 
-        int max = -1;
-        int deleteNumberPosition = -1;
+        min = replaceMinIfMaxAndMinAreAdjacent(digits, min, max);
 
-        for (int i=0; i < digits.length; ++i) {
-            final int j = i;
-            int[] s = Arrays.stream(digits).filter(digit -> digit != j).toArray();
-            System.out.println("Here: ");
-        }
-
-        /*boolean deleted = false;
+        int multiplier  = 1;
+        int deleteNumber = 0;
+        boolean deleted = false;
         for (int i = digits.length - 1; i >= 0; --i) {
             if ( !deleted && digits[i] == min) {
                 deleted = true;
@@ -39,8 +35,28 @@ public class DeleteDigit {
                 deleteNumber += multiplier * digits[i];
                 multiplier *= 10;
             }
-        }*/
+        }
 
-        return 1;
+        return deleteNumber;
+    }
+
+    int replaceMinIfMaxAndMinAreAdjacent(final int[] digits, final int min, final int max) {
+        int ret = min;
+
+        int countMin = 0;
+        int secondMin = max;
+        for (int i=0; i < digits.length; ++i) {
+            if (min == digits[i]) {
+                countMin++;
+            }
+            if (digits[i] < secondMin  && digits[i] > min) {
+                secondMin = digits[i];
+            }
+        }
+        if (digits.length > 2 && countMin == 1 && digits[digits.length-1] == min && digits[digits.length-2] == max) {
+            ret = secondMin;
+        }
+
+        return ret;
     }
 }

@@ -28,6 +28,6 @@ public class ChessKnight {
     }
 
     private boolean isValid(final int row, final int col) {
-        return (row < 0 || row > 7 || col < 0 || col > 7) ? false : true;
+        return (row < 1 || row > 8 || col < 1 || col > 8) ? false : true;
     }
 }
