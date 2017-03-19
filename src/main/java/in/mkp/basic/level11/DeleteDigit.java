@@ -40,6 +40,10 @@ public class DeleteDigit {
         return deleteNumber;
     }
 
+    /* The reason, we had to do this was because, say we have a number: 231 , we simply cannot take away
+     * the smallest digit if the largest & smallest digits are adjacent, ie smallest on rightmost side and highest next
+     * to it.
+     */
     int replaceMinIfMaxAndMinAreAdjacent(final int[] digits, final int min, final int max) {
         int ret = min;
 
