@@ -51,8 +51,7 @@ public class StringRearrange2 {
         // pairs u, v satisfy
         // deg(u) + deg(v) < n.
         //        The graphs G and [G] have the same vertex set—I’ll call it V —but the edge set
-        // of [G] may contain extra edges. In the next section I’ll give an explicit algorithm
-        // that constructs the closure.
+        // of [G] may contain extra edges. 
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
                 if (!differByOne(a[i], a[j]) && degree[i] + degree[j] >= n) {
