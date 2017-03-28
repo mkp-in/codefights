@@ -31,14 +31,28 @@ public class StringRearrange2 {
         int [] degree = new int[n];
 
         // check if this graph has Hamiltonian path
-        // based on theorem: A simple graph with n vertices (n >= 3) is Hamiltonian if every vertex has degree n / 2 or greater
-        // and theorem: A graph is Hamiltonian if and only if its closure is Hamiltonian
+        // Theorem 1 (Dirac, 1952): Let G be a graph with n ≥ 3 vertices. If each vertex
+        // of G has deg(v) ≥ n/2, then G is Hamiltonian
+        //
+        // Theorem 2 (Ore, 1960): A graph is Hamiltonian if and only if its closure is Hamiltonian
         for (int i = 0; i < n; i++)
             for (int j = 0; j < n; j++) {
                 if (differByOne(a[i], a[j]))
                     degree[i] ++;
             }
 
+
+        // Creating a closure of a Graph G.
+        // Suppose G is a graph on n vertices. Then the closure of G, written [G], is constructed
+        // by adding edges that connect pairs of non-adjacent vertices u and v for
+        // which
+        // deg(u) + deg(v) ≥ n
+        // One continues recursively, adding new edges until all nonadjacent
+        // pairs u, v satisfy
+        // deg(u) + deg(v) < n.
+        //        The graphs G and [G] have the same vertex set—I’ll call it V —but the edge set
+        // of [G] may contain extra edges. In the next section I’ll give an explicit algorithm
+        // that constructs the closure.
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
                 if (!differByOne(a[i], a[j]) && degree[i] + degree[j] >= n) {
@@ -48,8 +62,7 @@ public class StringRearrange2 {
             }
         }
 
-
-
+        // Verifying Theorem 1
         for (int d : degree)
             if (d<n/2) return false;
 
