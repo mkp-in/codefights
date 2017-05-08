@@ -17,3 +17,7 @@ hs_err_pid*
 .idea/uiDesigner.xml
 .idea/checkstyle-idea.xml
 out/*
+
+.DS_Store
+
+src/main/java/in/mkp/tournament/Test.java

@@ -1,0 +1,20 @@
+/*Please add ; after each select statement
+https://codefights.com/challenge/4qW2KdDkHEWqgqQGu
+ */
+CREATE PROCEDURE dancingCompetition()
+  BEGIN
+    DECLARE a INT;
+    DECLARE b INT;
+    DECLARE c INT;
+    DECLARE d INT;
+    DECLARE e INT;
+    DECLARE f INT;
+
+    SELECT MAX(first_criterion), MAX(second_criterion),
+      MAX(third_criterion), MIN(first_criterion),
+      MIN(second_criterion), MIN(third_criterion)
+    INTO a, b, c, d, e, f
+    FROM scores;
+
+    SELECT * FROM scores WHERE arbiter_id IN (SELECT arbiter_id FROM scores HAVING IF(first_criterion = a, 1,0) + IF(second_criterion = b, 1,0) + IF(third_criterion = c, 1,0) + IF(first_criterion = d, 1,0) + IF(second_criterion = e, 1,0) + IF(third_criterion = f, 1,0)< 2);
+  END

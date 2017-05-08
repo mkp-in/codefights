@@ -1,0 +1,73 @@
+/*Please add ; after each select statement
+https://codefights.com/challenge/F5KcDwew6hYQuW9K9
+*/
+CREATE PROCEDURE soccerGameSeries()
+  BEGIN
+    DECLARE res INT DEFAULT '1';
+    DECLARE id INT;
+    DECLARE first INT;
+    DECLARE second INT;
+    DECLARE host INT;
+    DECLARE done TINYINT DEFAULT 0;
+    DECLARE countFirst INT DEFAULT 0;
+    DECLARE countSecond INT DEFAULT 0;
+    DECLARE goalsFirst INT DEFAULT 0;
+    DECLARE goalsSecond INT DEFAULT 0;
+    DECLARE goalsAwayFirst INT DEFAULT 0;
+    DECLARE goalsAwaySecond INT DEFAULT 0;
+
+
+    DECLARE cur1 CURSOR FOR SELECT * FROM scores;
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
+
+    OPEN cur1;
+    read_loop: LOOP
+      FETCH FROM cur1 INTO id, first, second, host;
+      IF done THEN
+        LEAVE read_loop;
+      END IF;
+      IF (first > second) THEN
+        SET countFirst = countFirst + 1;
+      ELSE
+        SET countSecond = countSecond +1;
+      END IF;
+      SET goalsFirst = goalsFirst + first;
+      SET goalsSecond = goalsSecond + second;
+      IF (host = 2)
+      THEN
+        SET goalsAwayFirst = goalsAwayFirst + first;
+      ELSE
+        SET goalsAwaySecond = goalsAwaySecond + second;
+      END IF;
+    END LOOP;
+
+    /*SELECT countFirst, countSecond, goalsFirst, goalsSecond, goalsAwayFirst, goalsAwaySecond;*/
+
+    IF (countFirst > countSecond)
+    THEN
+      SET res = 1;
+    ELSEIF (countFirst < countSecond)
+      THEN
+        SET res = 2;
+    ELSE
+      IF (goalsFirst > goalsSecond)
+      THEN
+        SET res = 1;
+      ELSEIF (goalsFirst < goalsSecond)
+        THEN
+          SET res = 2;
+      ELSE
+        IF (goalsAwayFirst > goalsAwaySecond)
+        THEN
+          SET res = 1;
+        ELSEIF (goalsAwayFirst < goalsAwaySecond)
+          THEN
+            SET res = 2;
+        ELSE
+          SET res = 0;
+        END IF;
+      END IF;
+    END IF;
+
+    SELECT res AS winner;
+  END

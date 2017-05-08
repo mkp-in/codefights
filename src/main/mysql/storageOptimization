@@ -1,0 +1,43 @@
+/*Please add ; after each select statement
+https://codefights.com/challenge/5bKhRhpMD2Q2XutsN
+ */
+CREATE PROCEDURE storageOptimization()
+  BEGIN
+    DECLARE id INT;
+    DECLARE name VARCHAR(1024);
+    DECLARE dob VARCHAR(10);
+    DECLARE sal INT;
+    DECLARE done TINYINT DEFAULT 0;
+    DECLARE cur1 CURSOR FOR SELECT * FROM workers_info;
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
+
+    CREATE TEMPORARY TABLE IF NOT EXISTS workers_info_tmp (id INT, column_name VARCHAR(32), value VARCHAR(1024));
+
+    OPEN cur1;
+    read_loop: LOOP
+      FETCH FROM cur1 INTO id, name, dob, sal;
+
+      IF done THEN
+        LEAVE read_loop;
+      END IF;
+
+      IF name IS NOT NULL
+      THEN
+        INSERT INTO workers_info_tmp (id, column_name, value) VALUES (id, "name", name);
+      END IF;
+
+      IF dob IS NOT NULL
+      THEN
+        INSERT INTO workers_info_tmp (id, column_name, value) VALUES (id, "date_of_birth", dob);
+      END IF;
+
+      IF sal IS NOT NULL
+      THEN
+        INSERT INTO workers_info_tmp (id, column_name, value) VALUES (id, "salary", sal);
+      END IF;
+    END LOOP;
+    CLOSE cur1;
+
+    SELECT * FROM workers_info_tmp;
+    DROP TABLE workers_info_tmp;
+  END

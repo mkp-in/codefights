@@ -1,0 +1,132 @@
+/*Please add ; after each select statement
+https://codefights.com/challenge/XYuNi4cW3L7hQFB3T
+ */
+DELIMITER ;;
+CREATE PROCEDURE tictactoeTournament()
+  BEGIN
+    DECLARE name0, namex VARCHAR(256);
+    DECLARE b, r VARCHAR(9);
+    DECLARE done INT DEFAULT 0;
+
+    DECLARE curl CURSOR FOR SELECT name_naughts, name_crosses, board FROM results;
+
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
+    CREATE TEMPORARY TABLE IF NOT EXISTS temp (name   VARCHAR(256) NOT NULL,
+                                               points INT DEFAULT 0,
+                                               played INT DEFAULT 0,
+                                               won    INT DEFAULT 0,
+                                               draw   INT DEFAULT 0,
+                                               lost   INT DEFAULT 0,
+      PRIMARY KEY (`name`));
+
+    OPEN curl;
+    the_loop : LOOP
+      FETCH FROM curl INTO name0, namex, b;
+
+      IF done
+      THEN
+        LEAVE the_loop;
+        CLOSE curl;
+      END IF;
+
+      SET r = getResult(b);
+      IF r = "XXX"
+      THEN
+        INSERT INTO temp (name, points, played, won, draw, lost) VALUES (namex, 2, 1, 1, 0, 0)
+        ON DUPLICATE KEY UPDATE
+          points=points+2,
+          played=played+1,
+          won=won+1;
+        INSERT INTO temp (name, points, played, won, draw, lost) VALUES (name0, 0, 1, 0, 0, 1)
+        ON DUPLICATE KEY UPDATE
+          played=played+1,
+          lost=lost+1;
+      ELSEIF r = "OOO"
+        THEN
+          INSERT INTO temp (name, points, played, won, draw, lost) VALUES (name0, 2, 1, 1, 0, 0)
+          ON DUPLICATE KEY UPDATE
+            points=points+2,
+            played=played+1,
+            won=won+1;
+          INSERT INTO temp (name, points, played, won, draw, lost) VALUES (namex, 0, 1, 0, 0, 1)
+          ON DUPLICATE KEY UPDATE
+            played=played+1,
+            lost=lost+1;
+      ELSE
+        INSERT INTO temp (name, points, played, won, draw, lost) VALUES (name0, 1, 1, 0, 1, 0)
+        ON DUPLICATE KEY UPDATE
+          points=points+1,
+          played=played+1,
+          draw=draw+1;
+        INSERT INTO temp (name, points, played, won, draw, lost) VALUES (namex, 1, 1, 0, 1, 0)
+        ON DUPLICATE KEY UPDATE
+          points=points+1,
+          played=played+1,
+          draw=draw+1;
+      END IF;
+
+    END LOOP;
+    CLOSE curl;
+
+    SELECT * FROM temp ORDER BY points DESC, played, won DESC, name;
+    DROP TABLE temp;
+  END
+;;
+
+DELIMITER ;;
+CREATE FUNCTION getResult(b VARCHAR(9)) RETURNS VARCHAR(3)
+  BEGIN
+
+    DECLARE c VARCHAR(9);
+    SET c = SUBSTRING(b,1,3);
+    IF c = "XXX" OR c = "OOO"
+    THEN
+      RETURN c;
+    END IF;
+
+    SET c = SUBSTRING(b,4,3);
+    IF c = "XXX" OR c = "OOO"
+    THEN
+      RETURN c;
+    END IF;
+
+    SET c = SUBSTRING(b,7,3);
+    IF c = "XXX" OR c = "OOO"
+    THEN
+      RETURN c;
+    END IF;
+
+    SET c = CONCAT(SUBSTRING(b,1,1), SUBSTRING(b,4,1), SUBSTRING(b,7,1));
+    IF c = "XXX" OR c = "OOO"
+    THEN
+      RETURN c;
+    END IF;
+
+    SET c = CONCAT(SUBSTRING(b,2,1), SUBSTRING(b,5,1), SUBSTRING(b,8,1));
+    IF c = "XXX" OR c = "OOO"
+    THEN
+      RETURN c;
+    END IF;
+
+    SET c = CONCAT(SUBSTRING(b,3,1), SUBSTRING(b,6,1), SUBSTRING(b,9,1));
+    IF c = "XXX" OR c = "OOO"
+    THEN
+      RETURN c;
+    END IF;
+
+    SET c = CONCAT(SUBSTRING(b,1,1), SUBSTRING(b,5,1), SUBSTRING(b,9,1));
+    IF c = "XXX" OR c = "OOO"
+    THEN
+      RETURN c;
+    END IF;
+
+    SET c = CONCAT(SUBSTRING(b,3,1), SUBSTRING(b,5,1), SUBSTRING(b,7,1));
+    IF c = "XXX" OR c = "OOO"
+    THEN
+      RETURN c;
+    END IF;
+
+    RETURN "0";
+  END
+;;
+DELIMITER ;
