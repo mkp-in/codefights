@@ -21,14 +21,16 @@ public class StringRearrange2 {
         String[] str = {"abc","xbc","xxc","xbc","aby","ayy","aby"};
         //String[] str = {"abc", "abc", "abx", "abx", "axx"};
         System.out.println(stringRearrange.stringsRearrangement(str));
+        System.out.println(stringRearrange.stringsRearrangement(new String[]{"abc", "bef", "bcc", "bec", "bbc", "bdc"}));
     }
 
 
 
     boolean stringsRearrangement(String[] a) {
         int n = a.length;
+        System.out.println("n = " + n);
 
-        int [] degree = new int[n];
+        int[] degree = new int[n];
 
         // check if this graph has Hamiltonian path
         // Theorem 1 (Dirac, 1952): Let G be a graph with n ≥ 3 vertices. If each vertex
@@ -38,10 +40,12 @@ public class StringRearrange2 {
         for (int i = 0; i < n; i++)
             for (int j = 0; j < n; j++) {
                 if (differByOne(a[i], a[j]))
-                    degree[i] ++;
+                    degree[i]++;
             }
 
-
+        for (int i = 0 ; i < n; ++i) {
+            System.out.println(a[i] + "\t" + degree[i]);
+        }
         // Creating a closure of a Graph G.
         // Suppose G is a graph on n vertices. Then the closure of G, written [G], is constructed
         // by adding edges that connect pairs of non-adjacent vertices u and v for
@@ -59,6 +63,11 @@ public class StringRearrange2 {
                     degree[j]++;
                 }
             }
+        }
+
+        System.out.println("\n-");
+        for (int i = 0 ; i < n; ++i) {
+            System.out.println(a[i] + "\t" + degree[i]);
         }
 
         // Verifying Theorem 1
@@ -80,14 +89,4 @@ public class StringRearrange2 {
 
         return diff == 1 ? true : false;
     }
-
-    boolean allSelected(Word[] words) {
-        for (Word w : words) {
-            if (!w.selected) {
-                return false;
-            }
-        }
-        return true;
-    }
-
 }

@@ -6,7 +6,7 @@ import java.util.Set;
 /**
  * https://codefights.com/arcade/code-arcade/loop-tunnel/RcK4vupi8sFhakjnh
  *
- * REF: file:///Users/mkumar/Documents/Ebooks/Bresenhams-Algorithm.pdf
+ * REF: Bresenhams-Algorithm.pdf
  */
 public class CountBlackCells {
 
@@ -32,7 +32,7 @@ public class CountBlackCells {
         for (int i=0; i < max; ++i) {
             points.add(i+":"+j);
             if (e >= 0) {
-                if (i == j && j >= 0 ) points.add(i+":"+j);
+                //if (i == j && j >= 0 ) points.add(i+":"+j);
                 j++;
                 if (j < min) points.add(i+":"+j);
                 e-=1.0;
@@ -40,6 +40,25 @@ public class CountBlackCells {
             e+=m;
         }
 
-        return points.size();
+        /**
+         * After that we need to find the number lattice points between two points. (a, b) & (c, d).
+         * A Lattice point is defined as : A point at the intersection of two or more grid lines in a point lattice.
+         *
+         * So how do we count lattice points on a line:
+         *
+         * gcd(c−a,d−b)+1.
+         *
+         * REF: https://math.stackexchange.com/questions/628117/how-to-count-lattice-points-on-a-line
+         *
+        */
+        return points.size() + gcd(x, y) - 1;
+    }
+
+    int gcd(int a, int b) {
+        while (a != b) {
+            if (a > b) a=a-b;
+            if (b > a) b=b-a;
+        }
+        return a;
     }
 }

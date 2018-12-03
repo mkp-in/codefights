@@ -2,6 +2,7 @@ package in.mkp.challenges;
 
 /**
  * https://codefights.com/challenge/hWKhTrLciWip9D3qZ
+ *
  */
 public class CheckWeights {
 

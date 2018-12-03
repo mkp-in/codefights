@@ -5,6 +5,8 @@ import java.util.Set;
 
 /**
  * https://codefights.com/challenge/oDm5up3SPpMZqpEmy
+ *
+ *  ****** Awesome one ******
  */
 public class CheckSumSub {
 
